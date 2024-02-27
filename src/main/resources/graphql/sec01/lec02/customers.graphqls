@@ -4,6 +4,10 @@ type Customer{
     age: Int
     city: String
 }
+input AgeRangeFilter{
+    minAge: Int!
+    maxAge: Int!
+}
 
 type Query{
     #use this to fetch all customers
@@ -12,4 +16,7 @@ type Query{
     customerById(id: ID!): Customer
     #filter customers by name
     customersNameContains(name: String!): [Customer]
+
+    #filter customers by age range
+    customersByAgeRange(filter: AgeRangeFilter): [Customer]!
 }

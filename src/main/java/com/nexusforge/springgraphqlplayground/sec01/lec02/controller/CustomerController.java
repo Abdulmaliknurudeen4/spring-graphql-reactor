@@ -1,5 +1,6 @@
 package com.nexusforge.springgraphqlplayground.sec01.lec02.controller;
 
+import com.nexusforge.springgraphqlplayground.sec01.lec02.entity.AgeRangeFilter;
 import com.nexusforge.springgraphqlplayground.sec01.lec02.entity.Customer;
 import com.nexusforge.springgraphqlplayground.sec01.lec02.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +30,11 @@ public class CustomerController {
     public Flux<Customer> customersNameContains(@Argument("name") String name) {
         return this.service.nameContains(name);
     }
+
+    @QueryMapping("customersByAgeRange")
+    public Flux<Customer> customersByAgeRange(@Argument("filter") AgeRangeFilter filter) {
+        return this.service.filterByAge(filter);
+    }
+
+
 }
