@@ -4,6 +4,7 @@ import com.nexusforge.springgraphqlplayground.sec01.lec03.entity.Customer;
 import com.nexusforge.springgraphqlplayground.sec01.lec03.service.CustomerService;
 import com.nexusforge.springgraphqlplayground.sec01.lec03.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,8 @@ public class CustomerController {
 
 
     @SchemaMapping(typeName = "Customer")
-    public Flux<CustomerOrder> orders(Customer customer){
-        return this.orderService.ordersByCustomers(customer.getName());
+    public Flux<CustomerOrder> orders(@Argument("limit") Integer limit, Customer customer){
+        return this.orderService.ordersByCustomers(customer.getName()).take(limit);
     }
 
 }
