@@ -3,6 +3,7 @@ package com.nexusforge.springgraphqlplayground.sec01.lec04.service;
 import com.nexusforge.springgraphqlplayground.sec01.lec04.controller.CustomerOrder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,12 +36,17 @@ public class OrderService {
                     CustomerOrder.create(UUID.randomUUID(), "Lucy-product-4"))
     );
 
-    public Flux<CustomerOrder> ordersByCustomers(String name){
+    public Flux<CustomerOrder> ordersByCustomers(String name) {
         return Flux.fromIterable(map.getOrDefault(name, Collections.emptyList()));
     }
 
-    public Flux<List<CustomerOrder>> ordersByCustomersNames(List<String> name){
+    public Flux<List<CustomerOrder>> ordersByCustomersNames(List<String> name) {
         return Flux.fromIterable(name)
-                .map(n -> map.getOrDefault(n, Collections.emptyList()));
+                .flatMap(this::fetchOrders).defaultIfEmpty(Collections.emptyList());
+    }
+
+    //some soruce
+    private Mono<List<CustomerOrder>> fetchOrders(String name) {
+        return Mono.justOrEmpty(map.get(name));
     }
 }
