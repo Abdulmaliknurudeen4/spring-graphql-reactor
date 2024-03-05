@@ -1,9 +1,12 @@
 package com.nexusforge.springgraphqlplayground.sec01.lec04.service;
 
+import com.nexusforge.springgraphqlplayground.sec01.lec04.entity.Customer;
 import com.nexusforge.springgraphqlplayground.sec01.lec04.controller.CustomerOrder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -52,5 +55,12 @@ public class OrderService {
         return Mono.justOrEmpty(map.get(name)).delayElement(
                 Duration.ofMillis(ThreadLocalRandom.current().nextInt(0, 500))
         );
+    }
+
+    public Mono<Map<Customer, List<CustomerOrder>>> fetchOrderAsMap(List<Customer> customers){
+        return Flux.fromIterable(customers)
+                .map(c -> Tuples.of(c, map.getOrDefault(c.getName(), Collections.emptyList())))
+                .collectMap(Tuple2::getT1,
+                        Tuple2::getT2);
     }
 }
