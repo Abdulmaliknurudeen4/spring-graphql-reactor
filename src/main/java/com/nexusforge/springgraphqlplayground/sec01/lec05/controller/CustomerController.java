@@ -2,6 +2,7 @@ package com.nexusforge.springgraphqlplayground.sec01.lec05.controller;
 
 import com.nexusforge.springgraphqlplayground.sec01.lec05.entity.Customer;
 import com.nexusforge.springgraphqlplayground.sec01.lec05.service.CustomerService;
+import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingFieldSelectionSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -15,8 +16,9 @@ public class CustomerController {
     private CustomerService service;
 
     @QueryMapping("customers")
-    public Flux<Customer> customers(DataFetchingFieldSelectionSet selectionSet) {
-        System.out.println("customer" + selectionSet.getFields());
+    public Flux<Customer> customers(DataFetchingEnvironment environment) {
+        System.out.println("customer" + environment.getDocument());
+        System.out.println(environment.getOperationDefinition());
         return this.service.allCustomer();
     }
 
