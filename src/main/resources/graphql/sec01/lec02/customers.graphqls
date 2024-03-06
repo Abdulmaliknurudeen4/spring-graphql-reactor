@@ -18,5 +18,6 @@ type Query{
     customersNameContains(name: String!): [Customer]
 
     #filter customers by age range
-    customersByAgeRange(filter: AgeRangeFilter): [Customer]!
+    customersByAgeRange(filter: AgeRangeFilter): [Customer]! @deprecated(reason: "Use ageRange")
+    ageRange(filter: AgeRangeFilter): [Customer]!
 }

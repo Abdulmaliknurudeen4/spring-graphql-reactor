@@ -1,0 +1,53 @@
+query customersByAgeRange($kids: AgeRangeFilter!,
+$adults: AgeRangeFilter!,
+$oldies: AgeRangeFilter!
+$includeKids: Boolean!,
+$includeAdults: Boolean!,
+$includeOldies: Boolean!) {
+kids: customersByAgeRange(filter: $kids) @include(if: $includeKids) {
+...CustomerDetails
+}
+adults: customersByAgeRange(filter: $adults) @include(if: $includeAdults) {
+...CustomerDetails
+}
+oldies: customersByAgeRange(filter: $oldies) @include(if: $includeOldies) {
+...CustomerDetails
+}
+}
+
+
+query CustomerById($id: ID! = 1) {
+customerById(id: $id) {
+...CustomerDetails
+}
+customers {
+id
+}
+}
+
+
+fragment CustomerDetails on Customer {
+id
+name
+age
+city
+}
+
+//variables
+{
+"kids":{
+"minAge": 0,
+"maxAge": 5
+},
+"adults":{
+"minAge": 5,
+"maxAge": 10
+},
+"oldies":{
+"minAge": 10,
+"maxAge": 30
+},
+"includeKids": false,
+"includeAdults": true,
+"includeOldies": true
+}

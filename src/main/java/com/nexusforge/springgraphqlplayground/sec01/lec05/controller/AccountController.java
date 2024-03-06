@@ -2,6 +2,7 @@ package com.nexusforge.springgraphqlplayground.sec01.lec05.controller;
 
 import com.nexusforge.springgraphqlplayground.sec01.lec05.entity.Account;
 import com.nexusforge.springgraphqlplayground.sec01.lec05.entity.Customer;
+import graphql.schema.DataFetchingFieldSelectionSet;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Mono;
@@ -13,7 +14,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AccountController {
 
     @SchemaMapping(typeName = "Customer")
-    public Mono<Account> account(Customer customer) {
+    public Mono<Account> account(Customer customer, DataFetchingFieldSelectionSet selectionSet) {
+
+        System.out.println(
+                "account" + selectionSet.getFields()
+        );
 
         var type = ThreadLocalRandom.current().nextBoolean() ? "CHECKING" : "SAVING";
 

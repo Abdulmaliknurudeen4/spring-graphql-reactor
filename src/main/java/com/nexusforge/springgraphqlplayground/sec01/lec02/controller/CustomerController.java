@@ -36,5 +36,11 @@ public class CustomerController {
         return this.service.filterByAge(filter);
     }
 
+    @QueryMapping("ageRange")
+    public Flux<Customer> ageRange(@Argument("filter") AgeRangeFilter filter) {
+        return this.service.filterByAge(filter);
+    }
+
+
 
 }
