@@ -1,6 +1,6 @@
 package com.nexusforge.springgraphqlplayground.lec06.service;
 
-import com.nexusforge.springgraphqlplayground.lec06.controller.CustomerOrder;
+import com.nexusforge.springgraphqlplayground.lec06.entity.CustomerOrder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 

@@ -1,4 +1,4 @@
-package com.nexusforge.springgraphqlplayground.lec06.controller;
+package com.nexusforge.springgraphqlplayground.lec06.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
