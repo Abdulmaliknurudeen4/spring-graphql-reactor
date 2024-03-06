@@ -2,8 +2,11 @@ package com.nexusforge.springgraphqlplayground.lec06.controller;
 
 import com.nexusforge.springgraphqlplayground.lec06.entity.Customer;
 import com.nexusforge.springgraphqlplayground.lec06.entity.CustomerOrder;
+import com.nexusforge.springgraphqlplayground.lec06.entity.CustomerWithOrder;
+import com.nexusforge.springgraphqlplayground.lec06.service.CustomerOrderDataFetcher;
 import com.nexusforge.springgraphqlplayground.lec06.service.CustomerService;
 import com.nexusforge.springgraphqlplayground.lec06.service.OrderService;
+import graphql.schema.DataFetchingFieldSelectionSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
@@ -14,19 +17,16 @@ import reactor.core.publisher.Flux;
 public class CustomerController {
 
     @Autowired
-    private CustomerService service;
-    @Autowired
-    private OrderService orderService;
-
+    private CustomerOrderDataFetcher dataFetcher;
     @QueryMapping("customers")
-    public Flux<Customer> customers() {
-        return this.service.allCustomer();
+    public Flux<CustomerWithOrder> customers(DataFetchingFieldSelectionSet selectionSet) {
+
+        return this.dataFetcher.customerOrders(selectionSet);
     }
 
-
-    @SchemaMapping(typeName = "Customer")
+ /*   @SchemaMapping(typeName = "Customer")
     public Flux<CustomerOrder> orders(Customer customer){
         return this.orderService.ordersByCustomers(customer.getName());
-    }
+    }*/
 
 }
