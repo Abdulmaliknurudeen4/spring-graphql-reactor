@@ -2,11 +2,10 @@ package com.nexusforge.springgraphqlplayground.lec10.controller;
 
 import com.nexusforge.springgraphqlplayground.lec10.dto.Book;
 import com.nexusforge.springgraphqlplayground.lec10.dto.Electronics;
-import com.nexusforge.springgraphqlplayground.lec10.dto.Fruit;
+import com.nexusforge.springgraphqlplayground.lec10.dto.FruitDto;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -17,7 +16,7 @@ public class ProductController {
     @QueryMapping
     public Flux<Object> products(){
         return Flux.just(
-                Fruit.create(
+                FruitDto.create(
                         UUID.randomUUID(),
                         "Banana",
                         145,

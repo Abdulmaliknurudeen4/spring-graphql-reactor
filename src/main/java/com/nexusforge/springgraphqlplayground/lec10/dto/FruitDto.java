@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "create")
-public class Fruit {
+public class FruitDto {
     private UUID id = UUID.randomUUID();
     private String description;
     private Integer price;
