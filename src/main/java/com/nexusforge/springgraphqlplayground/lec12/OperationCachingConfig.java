@@ -14,6 +14,10 @@ import java.util.function.Function;
 @Configuration
 public class OperationCachingConfig {
 
+    // suggestions: use variables along with operation name
+    // use variables and don't cache
+    // use caffiene cache to store cached queries
+
     @Bean
     public GraphQlSourceBuilderCustomizer customizer(PreparsedDocumentProvider provider) {
         return c -> c.configureGraphQl(builder -> builder.preparsedDocumentProvider(provider));

@@ -71,3 +71,11 @@ title
 }
 }
 }
+
+-- Using Cache in GraphQL
+query SayHello($name: String!) {
+sayHello(name: $name)
+}
+// seperating the variables and the query makes up for rapid execution and reduces caching space
+// since it just caches the query only without the variables
+//adding the variables inline will cause the cache to bloat
