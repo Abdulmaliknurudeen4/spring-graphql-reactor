@@ -51,3 +51,23 @@ city
 "includeAdults": true,
 "includeOldies": true
 }
+
+// Using Unions in GraphQL
+
+{
+search{
+type: __typename
+... on Fruit{
+expiryDate
+description
+}
+... on Electronics{
+description
+price
+}
+... on Book{
+author
+title
+}
+}
+}
