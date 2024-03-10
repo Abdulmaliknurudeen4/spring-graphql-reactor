@@ -1,4 +1,4 @@
-type Address{
-    street: String
-    city: String
-}
+#type Address{
+#    street: String
+#    city: String
+#}
