@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @Controller
 public class CustomerController {
     @Autowired
@@ -28,12 +30,13 @@ public class CustomerController {
 
     @MutationMapping
     public Mono<CustomerDto> createCustomer(@Argument CustomerDto customer) {
-        return this.service.createCustomer(customer);
+        return this.service.createCustomer(customer).
+                delayElement(Duration.ofSeconds(2));
     }
 
     @MutationMapping
     public Mono<CustomerDto> updateCustomer(@Argument Integer id, @Argument("customer") CustomerDto dto) {
-        return this.service.updateCustomer(id, dto);
+        return this.service.updateCustomer(id, dto).delayElement(Duration.ofSeconds(2));
     }
 
     @MutationMapping

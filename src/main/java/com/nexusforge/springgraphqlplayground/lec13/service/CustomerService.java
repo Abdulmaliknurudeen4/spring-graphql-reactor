@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class CustomerService {
+    //Mutation takes place in parallel
 
     @Autowired
     private CustomerRepository repository;
