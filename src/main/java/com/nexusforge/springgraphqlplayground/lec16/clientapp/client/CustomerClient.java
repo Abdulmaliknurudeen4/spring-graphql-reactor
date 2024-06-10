@@ -1,5 +1,6 @@
 package com.nexusforge.springgraphqlplayground.lec16.clientapp.client;
 
+import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.client.ClientGraphQlResponse;
 import org.springframework.graphql.client.HttpGraphQlClient;
@@ -17,7 +18,14 @@ public class CustomerClient {
                 .build();
     }
 
-    public Mono<ClientGraphQlResponse> rawQuery(String query){
+    public Mono<ClientGraphQlResponse> rawQuery(String query) {
         return this.client.document(query).execute();
+    }
+
+    public Mono<CustomerDto> getCustomerById(Integer id) {
+        return this.client.documentName("customer-by-id")
+                .variable("id", id)
+                .retrieve("customerById")
+                .toEntity(CustomerDto.class);
     }
 }
