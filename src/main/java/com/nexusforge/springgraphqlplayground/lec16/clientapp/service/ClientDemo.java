@@ -36,18 +36,19 @@ public class ClientDemo implements CommandLineRunner {
                 """;
         Mono<List<CustomerDto>> mono = this.client.rawQuery(query)
                 .map(cr -> cr.field("a").toEntityList(CustomerDto.class));
-        return mono.delayElement(Duration.ofSeconds(1))
-                .doFirst(() -> System.out.println("Raw Query"))
-                .then(mono)
-                .doOnNext(System.out::println)
-                .then();
+        return this.executor("Raw Query", mono);
+
 
     }
 
-    private Mono<Void> getCustomerById(){
+    private Mono<Void> getCustomerById() {
+        return this.executor("getCustomerByID", this.client.getCustomerById(2));
+    }
+
+    private <T> Mono<Void> executor(String message, Mono<T> mono) {
         return Mono.delay(Duration.ofSeconds(1))
-                .doFirst(()->System.out.println("getCustomerByID"))
-                .then(this.client.getCustomerById(2))
+                .doFirst(() -> System.out.println(message))
+                .then(mono)
                 .doOnNext(System.out::println)
                 .then();
     }
