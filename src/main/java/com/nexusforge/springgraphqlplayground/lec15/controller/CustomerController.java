@@ -31,7 +31,11 @@ public class CustomerController {
 
     @MutationMapping
     public Mono<CustomerDto> createCustomer(@Argument CustomerDto customer) {
-        return this.service.createCustomer(customer);
+       return Mono.just(customer)
+                .filter(customerDto -> customer.getAge() >= 18)
+                .flatMap(this.service::createCustomer)
+                .switchIfEmpty(ApplicationErrors.underAgeUser(customer));
+       // return this.service.createCustomer(customer);
     }
 
     @MutationMapping
