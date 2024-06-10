@@ -1,6 +1,7 @@
 package com.nexusforge.springgraphqlplayground.lec15.controller;
 
 import com.nexusforge.springgraphqlplayground.lec15.dto.CustomerDto;
+import com.nexusforge.springgraphqlplayground.lec15.dto.CustomerNotFound;
 import com.nexusforge.springgraphqlplayground.lec15.dto.DeleteResponseDto;
 import com.nexusforge.springgraphqlplayground.lec15.exceptions.ApplicationErrors;
 import com.nexusforge.springgraphqlplayground.lec15.service.CustomerService;
@@ -11,6 +12,9 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SynchronousSink;
+
+import java.util.function.BiConsumer;
 
 @Controller
 public class CustomerController {
@@ -23,9 +27,11 @@ public class CustomerController {
     }
 
     @QueryMapping
-    public Mono<CustomerDto> customerById(@Argument Integer id) {
+    public Mono<Object> customerById(@Argument Integer id) {
         return this.service.customerById(id)
-                .switchIfEmpty(ApplicationErrors.noSuchUser(id));
+                .cast(Object.class)
+                .switchIfEmpty(Mono.just(CustomerNotFound.create(id)));
+               // .handle(isSuperUser());
 
     }
 

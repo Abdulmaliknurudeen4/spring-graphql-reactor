@@ -1,6 +1,6 @@
 type Query{
     customers: [Customer]!
-    customerById(id: ID!) : Customer
+    customerById(id: ID!) : CustomerResponse!
 
 }
 
@@ -8,6 +8,17 @@ type Mutation{
     createCustomer(customer: CustomerInput) : Customer
     updateCustomer(id: ID!, customer: CustomerInput!) : Customer
     deleteCustomer(id: ID!): DeleteResponse!
+}
+
+union CustomerResponse = Customer | CustomerNotFound | IsaSuperUser
+
+type CustomerNotFound{
+    id : ID!
+    message: String
+}
+type IsaSuperUser{
+    id : ID!
+    message: String
 }
 
 type Customer{
