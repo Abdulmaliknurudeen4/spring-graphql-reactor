@@ -1,0 +1,13 @@
+type Subscription{
+    # don't do [CustomerEvent] since we're not sending a list but a stream
+    customerEvents: CustomerEvent
+}
+type CustomerEvent{
+    id: ID!
+    action: Action
+}
+enum Action{
+    CREATED,
+    UPDATED,
+    DELETED
+}
