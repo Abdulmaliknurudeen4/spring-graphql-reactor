@@ -2,6 +2,7 @@ package com.nexusforge.springgraphqlplayground.lec15.controller;
 
 import com.nexusforge.springgraphqlplayground.lec15.dto.CustomerDto;
 import com.nexusforge.springgraphqlplayground.lec15.dto.DeleteResponseDto;
+import com.nexusforge.springgraphqlplayground.lec15.exceptions.ApplicationErrors;
 import com.nexusforge.springgraphqlplayground.lec15.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -23,8 +24,9 @@ public class CustomerController {
 
     @QueryMapping
     public Mono<CustomerDto> customerById(@Argument Integer id) {
-        //return this.service.customerById(id);
-        throw new RuntimeException("Some Weird issues");
+        return this.service.customerById(id)
+                .switchIfEmpty(ApplicationErrors.noSuchUser(id));
+
     }
 
     @MutationMapping
