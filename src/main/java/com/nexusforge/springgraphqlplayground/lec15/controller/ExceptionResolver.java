@@ -8,7 +8,9 @@ import org.springframework.graphql.execution.ErrorType;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ExceptionResolver implements DataFetcherExceptionResolver {
@@ -19,6 +21,11 @@ public class ExceptionResolver implements DataFetcherExceptionResolver {
                         GraphqlErrorBuilder.newError(environment)
                                 .message(exception.getMessage())
                                 .errorType(ErrorType.INTERNAL_ERROR)
+                                .extensions(Map.of(
+                                        "customerID", 123,
+                                        "timestamp", LocalDateTime.now(),
+                                        "a", "b"
+                                ))
                                 .build()
                 )
         );
