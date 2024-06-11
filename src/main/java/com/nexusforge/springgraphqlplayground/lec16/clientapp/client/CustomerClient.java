@@ -1,9 +1,6 @@
 package com.nexusforge.springgraphqlplayground.lec16.clientapp.client;
 
-import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerDto;
-import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerNotFound;
-import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerResponseInterface;
-import com.nexusforge.springgraphqlplayground.lec16.dto.GenericResponse;
+import com.nexusforge.springgraphqlplayground.lec16.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.graphql.client.ClientGraphQlResponse;
@@ -68,6 +65,23 @@ public class CustomerClient {
 
     public Mono<CustomerDto> cusomterById(Integer id) {
         return this.crud("GetCustomerbyId", Map.of("id", id), new ParameterizedTypeReference<CustomerDto>() {
+        });
+    }
+
+    public Mono<CustomerDto> createCustomer(CustomerDto dto) {
+        return this.crud("CreateCustomer", Map.of("customer", dto), new ParameterizedTypeReference<CustomerDto>() {
+        });
+    }
+
+    public Mono<CustomerDto> updateCustomer(Integer id, CustomerDto dto) {
+        return this.crud("UpdateCustomer", Map.of("id", id,
+                "customer", dto), new ParameterizedTypeReference<CustomerDto>() {
+        });
+    }
+
+    public Mono<DeleteResponseDto> deleteCustomer(Integer id) {
+        return this.crud("DeleteCustomer", Map.of("id", id),
+                new ParameterizedTypeReference<DeleteResponseDto>() {
         });
     }
 

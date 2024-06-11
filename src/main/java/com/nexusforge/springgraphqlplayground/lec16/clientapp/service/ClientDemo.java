@@ -18,7 +18,7 @@ public class ClientDemo implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        customerById().subscribe();
+        deleteCustomer().subscribe();
     }
 
     private Mono<Void> rawQueryDemo() {
@@ -55,7 +55,19 @@ public class ClientDemo implements CommandLineRunner {
         return this.executor("allCustomersDemo", this.client.allCustomers());
     }
 
-    private Mono<Void> customerById(){
+    private Mono<Void> customerByIdDemo(){
         return this.executor("customerById", this.client.cusomterById(1));
     }
+    private Mono<Void> createCustomer(){
+        return this.executor("createCustomer Demo", this.client.createCustomer(CustomerDto.create(null, "obie", 45, "Kogi State")));
+    }
+
+    private Mono<Void> updateCustomer(){
+        return this.executor("updateCustomer Demo", this.client.updateCustomer(2,
+                CustomerDto.create(null, "jackson", 25, "Dallas")));
+    }
+    private Mono<Void> deleteCustomer(){
+        return this.executor("Delete Customer Demo", this.client.deleteCustomer(2));
+    }
+
 }
