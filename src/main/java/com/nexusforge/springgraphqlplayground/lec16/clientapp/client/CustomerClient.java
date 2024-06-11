@@ -18,7 +18,7 @@ public class CustomerClient {
     private final HttpGraphQlClient client;
 
     public CustomerClient(@Value("${customer.service.url}") String baseUrl) {
-        this.client = HttpGraphQlClient.builder()
+        this.client = HttpGraphQlClient.builder().header("caller-id-permanent", "MEMEMEMEM")
                 .webClient(b -> b.baseUrl(baseUrl))
                 .build();
     }
@@ -34,7 +34,11 @@ public class CustomerClient {
                  .toEntity(CustomerDto.class);
      }*/
     public Mono<GenericResponse<?>> getCustomersById(Integer id) {
-        return this.client.documentName("customer-by-id")
+        return this.client
+                .mutate()
+                .header("caller-id-temporal", "Nurudeen AbdulRahman")
+                .build()
+                .documentName("customer-by-id")
                 .variable("id", id)
                 .execute()
                 .mapNotNull(cr -> {
