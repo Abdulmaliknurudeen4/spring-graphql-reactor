@@ -29,11 +29,11 @@ public class CustomerClient {
                 .retrieve("customerById")
                 .toEntity(CustomerDto.class);
     }*/
-    public Mono<MultiCustomerAssignment> getCustomersById(Integer id) {
+    public Mono<CustomerDto> getCustomersById(Integer id) {
         return this.client.documentName("customer-by-id")
                 .variable("id", id)
                 .execute()
-                .map(cr -> cr.toEntity(MultiCustomerAssignment.class));
+                .mapNotNull(cr -> cr.field("customerById").toEntity(CustomerDto.class));
     }
 
 }

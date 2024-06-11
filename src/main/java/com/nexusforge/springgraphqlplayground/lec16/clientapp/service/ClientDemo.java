@@ -42,7 +42,7 @@ public class ClientDemo implements CommandLineRunner {
     }
 
     private Mono<Void> getCustomerById() {
-        return this.executor("getCustomerByID", this.client.getCustomersById(2));
+        return this.executor("getCustomerByID", this.client.getCustomersById(62));
     }
 
     private <T> Mono<Void> executor(String message, Mono<T> mono) {
