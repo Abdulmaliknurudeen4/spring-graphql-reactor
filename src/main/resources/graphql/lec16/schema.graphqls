@@ -1,6 +1,16 @@
+union CustomerResponse = Customer | CustomerNotFound | IsaSuperUser
+
+type CustomerNotFound{
+    id : ID!
+    message: String
+}
+type IsaSuperUser{
+    id : ID!
+    message: String
+}
 type Query{
     customers: [Customer]!
-    customerById(id: ID!) : Customer
+    customerById(id: ID!) : CustomerResponse!
 
 }
 

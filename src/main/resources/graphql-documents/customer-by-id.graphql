@@ -1,6 +1,15 @@
 query GetCustomerById($id: ID!){
-     customerById(id: $id){
-... customerDetails
+    customerById(id: $id){
+        type: __typename
+        ... customerDetails
+        ... on CustomerNotFound{
+            id
+            message
+        }
+        ... on IsaSuperUser{
+            id
+            message
+        }
     }
 }
 

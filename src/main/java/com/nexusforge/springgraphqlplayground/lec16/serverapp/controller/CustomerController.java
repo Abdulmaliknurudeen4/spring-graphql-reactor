@@ -1,6 +1,7 @@
 package com.nexusforge.springgraphqlplayground.lec16.serverapp.controller;
 
 import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerDto;
+import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerNotFound;
 import com.nexusforge.springgraphqlplayground.lec16.dto.DeleteResponseDto;
 import com.nexusforge.springgraphqlplayground.lec16.serverapp.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,10 @@ public class CustomerController {
     }
 
     @QueryMapping
-    public Mono<CustomerDto> customerById(@Argument Integer id) {
-
+    public Mono<Object> customerById(@Argument Integer id) {
         return this.service.customerById(id)
-                .switchIfEmpty(Mono.error(new RuntimeException("no user found")));
+                .cast(Object.class)
+                .defaultIfEmpty(CustomerNotFound.create(id));
     }
 
     @MutationMapping
