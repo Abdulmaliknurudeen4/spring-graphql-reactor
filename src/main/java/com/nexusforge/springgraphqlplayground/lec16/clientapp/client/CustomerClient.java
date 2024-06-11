@@ -64,4 +64,12 @@ public class CustomerClient {
                 .toEntityList(CustomerDto.class);
     }
 
+    public Mono<CustomerDto> cusomterById(Integer id ){
+        return this.client.documentName("crud-operations")
+                .operationName("GetCustomerbyId")
+                .variable("id", id)
+                .retrieve("response")
+                .toEntity(CustomerDto.class);
+    }
+
 }
