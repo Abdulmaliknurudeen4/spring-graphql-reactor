@@ -1,11 +1,10 @@
-
 query GetAll{
-    response: customers {
+    response: customers{
         ...customerDetails
     }
 }
 
-query GetCustomerbyId($id: ID!){
+query GetCustomerById($id: ID!){
     response: customerById(id: $id){
         ...customerDetails
     }
@@ -17,9 +16,7 @@ mutation CreateCustomer($customer: CustomerInput!){
     }
 }
 
-
-
-mutation UpdateCustomer($id: ID!, $customer: CustomerInput){
+mutation UpdateCustomer($id: ID!, $customer: CustomerInput!){
     response: updateCustomer(id: $id, customer: $customer){
         ...customerDetails
     }
@@ -33,6 +30,7 @@ mutation DeleteCustomer($id: ID!){
 }
 
 fragment customerDetails on Customer{
+    id
     name
     age
     city
