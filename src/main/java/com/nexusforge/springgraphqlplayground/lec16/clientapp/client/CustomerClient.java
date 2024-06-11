@@ -5,12 +5,15 @@ import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerNotFound;
 import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerResponseInterface;
 import com.nexusforge.springgraphqlplayground.lec16.dto.GenericResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.graphql.client.ClientGraphQlResponse;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CustomerClient {
@@ -57,19 +60,23 @@ public class CustomerClient {
                 });
     }
 
-    public Mono<List<CustomerDto>> allCustomers(){
-        return this.client.documentName("crud-operations")
-                .operationName("GetAll")
-                .retrieve("response")
-                .toEntityList(CustomerDto.class);
+    public Mono<List<CustomerDto>> allCustomers() {
+        return this.crud("GetAll", Collections.emptyMap(), new ParameterizedTypeReference<List<CustomerDto>>() {
+        });
+
     }
 
-    public Mono<CustomerDto> cusomterById(Integer id ){
+    public Mono<CustomerDto> cusomterById(Integer id) {
+        return this.crud("GetCustomerbyId", Map.of("id", id), new ParameterizedTypeReference<CustomerDto>() {
+        });
+    }
+
+    private <T> Mono<T> crud(String operationName, Map<String, Object> variables, ParameterizedTypeReference<T> type) {
         return this.client.documentName("crud-operations")
-                .operationName("GetCustomerbyId")
-                .variable("id", id)
+                .operationName(operationName)
+                .variables(variables)
                 .retrieve("response")
-                .toEntity(CustomerDto.class);
+                .toEntity(type);
     }
 
 }
