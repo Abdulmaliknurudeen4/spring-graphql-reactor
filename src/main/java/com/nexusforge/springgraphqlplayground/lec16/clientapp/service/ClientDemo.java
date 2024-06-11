@@ -1,6 +1,7 @@
 package com.nexusforge.springgraphqlplayground.lec16.clientapp.service;
 
 import com.nexusforge.springgraphqlplayground.lec16.clientapp.client.CustomerClient;
+import com.nexusforge.springgraphqlplayground.lec16.clientapp.client.SubscriptionClient;
 import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,9 +17,15 @@ public class ClientDemo implements CommandLineRunner {
     @Autowired
     private CustomerClient client;
 
+    @Autowired
+    private SubscriptionClient events;
+
     @Override
     public void run(String... args) throws Exception {
-        deleteCustomer().subscribe();
+        this.events.customerEvents()
+                .doOnNext(e -> System.out.println("**" + e.getAction()+"**"))
+                .subscribe();
+
     }
 
     private Mono<Void> rawQueryDemo() {
@@ -69,5 +76,4 @@ public class ClientDemo implements CommandLineRunner {
     private Mono<Void> deleteCustomer(){
         return this.executor("Delete Customer Demo", this.client.deleteCustomer(2));
     }
-
 }
