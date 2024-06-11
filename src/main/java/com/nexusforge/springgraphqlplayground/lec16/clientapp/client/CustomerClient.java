@@ -10,6 +10,8 @@ import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Service
 public class CustomerClient {
 
@@ -53,6 +55,13 @@ public class CustomerClient {
                     return isCustomer ? field.toEntity(CustomerDto.class) : field.toEntity(CustomerNotFound.class);
 
                 });
+    }
+
+    public Mono<List<CustomerDto>> allCustomers(){
+        return this.client.documentName("crud-operations")
+                .operationName("GetAll")
+                .retrieve("response")
+                .toEntityList(CustomerDto.class);
     }
 
 }
