@@ -1,7 +1,7 @@
 package com.nexusforge.springgraphqlplayground.lec16.clientapp.client;
 
 import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerDto;
-import com.nexusforge.springgraphqlplayground.lec16.dto.MultiCustomerAssignment;
+import com.nexusforge.springgraphqlplayground.lec16.dto.GenericResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.client.ClientGraphQlResponse;
 import org.springframework.graphql.client.HttpGraphQlClient;
@@ -29,11 +29,21 @@ public class CustomerClient {
                 .retrieve("customerById")
                 .toEntity(CustomerDto.class);
     }*/
-    public Mono<CustomerDto> getCustomersById(Integer id) {
+    public Mono<GenericResponse<?>> getCustomersById(Integer id) {
         return this.client.documentName("customer-by-id")
                 .variable("id", id)
                 .execute()
-                .mapNotNull(cr -> cr.field("customerById").toEntity(CustomerDto.class));
+                .mapNotNull(cr -> {
+                    var field = cr.field("customerById");
+                    /*if(field.getValue() != null){
+                        return new GenericResponse<>(field.toEntity(CustomerDto.class));
+                    }else{
+                        return new GenericResponse<>(field.getErrors());
+                    }*/
+                    return field.hasValue() ? new GenericResponse<>(field.toEntity(CustomerDto.class)) :
+                             new GenericResponse<>(field.getErrors());
+
+                });
     }
 
 }
