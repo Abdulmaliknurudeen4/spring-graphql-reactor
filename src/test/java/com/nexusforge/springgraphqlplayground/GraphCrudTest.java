@@ -1,6 +1,9 @@
 package com.nexusforge.springgraphqlplayground;
 
+import com.nexusforge.springgraphqlplayground.lec16.dto.Status;
 import com.nexusforge.springgraphqlplayground.lec16.dto.CustomerDto;
+import com.nexusforge.springgraphqlplayground.lec16.dto.DeleteResponseDto;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
@@ -74,11 +77,13 @@ public class GraphCrudTest {
     @Test
     public void deleteCustomer(){
         this.client.documentName("crud-operations")
-                .variable("id", 4)
+                .variable("id", 2)
                 .operationName("DeleteCustomer")
                 .execute()
-                .path("response.id").entity(Integer.class).isEqualTo(4)
-                .path("response.status").entity(String.class).isEqualTo("SUCCESS");
+                .path("response").entity(DeleteResponseDto.class).satisfies(r ->{
+                    Assertions.assertThat(r.getId()).isEqualTo(2);
+                    Assertions.assertThat(r.getStatus()).isEqualTo(Status.SUCCESS);
+                });
 
     }
 }
